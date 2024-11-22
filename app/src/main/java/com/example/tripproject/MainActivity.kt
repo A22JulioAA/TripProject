@@ -1,5 +1,6 @@
 package com.example.tripproject
 
+import android.content.res.Resources.Theme
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -29,8 +30,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.tripproject.ui.theme.TealLight
 import com.example.tripproject.ui.theme.TripProjectTheme
 
 class MainActivity : ComponentActivity() {
@@ -96,10 +99,10 @@ fun topBar(){
 fun WelcomeScreen (modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier.fillMaxSize(),
-        color = Color.LightGray) {
+        color = TealLight) {
             Text(
-                text = "Bienvenido a mi app",
-                modifier = Modifier.padding(100.dp)
+                text = stringResource(id = R.string.welcome_message),
+                modifier = Modifier.padding(12.dp)
             )
     }
 }

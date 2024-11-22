@@ -42,17 +42,7 @@ class MainActivity : ComponentActivity() {
             TripProjectTheme {
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    topBar = {
-                        TopAppBar(
-                            colors = TopAppBarDefaults.topAppBarColors(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                titleContentColor = MaterialTheme.colorScheme.primary
-                            ),
-                            title = {
-                                Text("Topbar")
-                            }
-                        )
-                    },
+                    topBar = { topBar() },
                     bottomBar = {
                         BottomAppBar (
                             actions = {
@@ -78,21 +68,38 @@ class MainActivity : ComponentActivity() {
                         )
                     },
                     ) { innerPadding ->
-                    MyApp (Modifier.padding(innerPadding))
+                        MyApp (modifier = Modifier.padding(innerPadding))
                 }
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun topBar(){
+        TopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                titleContentColor = MaterialTheme.colorScheme.primary
+            ),
+            title = {
+                Icon(
+                    Icons.Filled.Home, contentDescription = "Hola"
+                )
+            }
+        )
+
+}
+
 @Composable
 fun WelcomeScreen (modifier: Modifier = Modifier) {
-    Surface (
-        modifier = Modifier.fillMaxSize(),
+    Surface(
+        modifier = modifier.fillMaxSize(),
         color = Color.LightGray) {
             Text(
                 text = "Bienvenido a mi app",
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(100.dp)
             )
     }
 }

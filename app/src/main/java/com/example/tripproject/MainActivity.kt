@@ -255,9 +255,16 @@ fun WelcomeScreen (modifier: Modifier = Modifier) {
 // Función para crear la pantalla de conversión de divisas
 @Composable
 fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
+    // Variables para el select de la moneda
+    val monedaSeleccionada by remember { mutableStateOf("") }
+    val expandido by remember { mutableStateOf(false) }
+
+    // Variables para el input de la cantidad
     var cantidad by remember { mutableStateOf("") }
+
     var cantidadConvertida by remember { mutableStateOf(0.0) }
     val ratioDeConversion = 1.2
+
 
     Surface (
         modifier = modifier.fillMaxSize(),
@@ -275,6 +282,8 @@ fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
+
+
             OutlinedTextField(
                 value = cantidad,
                 onValueChange = {
@@ -289,6 +298,7 @@ fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
+
         }
 
     }
@@ -340,5 +350,29 @@ fun MyTxt(text: String, modifier: Modifier) {
 fun WelcomePreview() {
     TripProjectTheme {
         MyApp(modifier = Modifier.fillMaxSize())
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ConversorDivisasPreview() {
+    TripProjectTheme {
+        ConversorDivisasScreen()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GastosViajePreview() {
+    TripProjectTheme {
+        GastosViajeScreen()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MapasYRutasPreview() {
+    TripProjectTheme {
+        MapasYRutasScreen()
     }
 }

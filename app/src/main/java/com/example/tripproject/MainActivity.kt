@@ -36,6 +36,7 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -44,6 +45,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,6 +60,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -82,10 +85,10 @@ class MainActivity : ComponentActivity() {
                     val monedaDao = database.monedaDao()
 
                     val monedas = monedaDao.getMonedas()
-
-                    monedas.forEach {
-                        println("Moneda: ${it.nombre}")
-                    }
+//
+//                    monedas.forEach {
+//                        println("Moneda: ${it.nombre}")
+//                    }
                 }
 
                 Scaffold(
@@ -254,17 +257,20 @@ fun WelcomeScreen (modifier: Modifier = Modifier) {
 
 // Función para crear la pantalla de conversión de divisas
 @Composable
-fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
+fun ConversorDivisasScreen (viewModel: ConversorDivisasViewModel, modifier: Modifier = Modifier) {
     // Variables para el select de la moneda
-    val monedaSeleccionada by remember { mutableStateOf("") }
-    val expandido by remember { mutableStateOf(false) }
+    var monedaSeleccionada by remember { mutableStateOf<Moneda?>(null) }
+    var expandido by remember { mutableStateOf(false) }
+
+    // Sacamos todas las monedas almacenadas de la base de datos para ponerlas en el select
+    val monedas by viewModel.monedas.collectAsState(initial = emptyList())
 
     // Variables para el input de la cantidad
     var cantidad by remember { mutableStateOf("") }
 
+    // Variables de operaciones
     var cantidadConvertida by remember { mutableStateOf(0.0) }
     val ratioDeConversion = 1.2
-
 
     Surface (
         modifier = modifier.fillMaxSize(),
@@ -282,7 +288,26 @@ fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
+            OutlinedButton(onClick = { expandido = true }) {
+                Text(
+                    monedaSeleccionada?.nombre ?: "Selecciona una moneda"
+                )
+            }
 
+            DropdownMenu(
+                expanded = expandido,
+                onDismissRequest = { expandido = false }
+            ) {
+                monedas.forEach {moneda ->
+                    DropdownMenuItem(
+                        text = { Text(moneda.nombre) },
+                        onClick = {
+                            monedaSeleccionada = moneda
+                            expandido = false
+                        }
+                    )
+                }
+            }
 
             OutlinedTextField(
                 value = cantidad,

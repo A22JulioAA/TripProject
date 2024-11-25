@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MonedaDAO {
@@ -14,7 +15,7 @@ interface MonedaDAO {
     suspend fun getMonedaByCodigo(codigo: String): Moneda?
 
     @Query("SELECT * FROM moneda ORDER BY nombre ASC")
-    suspend fun getMonedas(): List<Moneda>
+    fun getMonedas(): Flow<List<Moneda>>
 
     @Update
     suspend fun updateMoneda(moneda: Moneda)

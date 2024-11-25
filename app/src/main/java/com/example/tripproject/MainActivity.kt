@@ -80,17 +80,6 @@ class MainActivity : ComponentActivity() {
 
                 val  navController = rememberNavController()
 
-                lifecycleScope.launch {
-                    val database = DatabaseProvider.getDatabase(applicationContext)
-                    val monedaDao = database.monedaDao()
-
-                    val monedas = monedaDao.getMonedas()
-//
-//                    monedas.forEach {
-//                        println("Moneda: ${it.nombre}")
-//                    }
-                }
-
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     topBar = { TopBar() },

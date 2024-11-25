@@ -3,22 +3,36 @@ package com.example.tripproject
 import android.app.Application
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class TripApplication : Application() {
+    private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
     override fun onCreate() {
         super.onCreate()
 
-        CoroutineScope(Dispatchers.IO).launch {
-            iniciarMonedasBase()
+        iniciarMonedasBase()
+    }
+
+    private fun iniciarMonedasBase() {
+        applicationScope.launch {
+            try {
+                populateDefaultCurrencies()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
-    private suspend fun iniciarMonedasBase () {
+    private suspend fun populateDefaultCurrencies () {
         val database = DatabaseProvider.getDatabase(this)
         val monedaDao = database.monedaDao()
 
-        if (monedaDao.getMonedas().isEmpty()) {
+        val monedas = monedaDao.getMonedas().first()
+
+        if (monedas.isEmpty()) {
             val monedasBase = listOf(
                 Moneda(nombre = "Euro", codigo = "EUR", simbolo = "€"),
                 Moneda(nombre = "Dólar Estadounidense", codigo = "USD", simbolo = "$"),

@@ -1,5 +1,6 @@
 plugins {
     id("com.google.devtools.ksp")
+    id("dagger.hilt.android.plugin")
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
@@ -42,6 +43,7 @@ android {
 
 dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
+    implementation("com.google.dagger:hilt-android:2.44")
     ksp("androidx.room:room-compiler:2.6.1")
     implementation("androidx.navigation:navigation-compose:2.8.4")
     implementation(libs.androidx.core.ktx)

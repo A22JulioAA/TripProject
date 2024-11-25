@@ -5,4 +5,6 @@
         Los viajes son para disfrutarlos,
         deja que nosotros hagamos el resto!
     </string>
+    <string name="user_name">Julio</string>
+    <string name="userGreeting">Bienvenido Julio!</string>
 </resources>

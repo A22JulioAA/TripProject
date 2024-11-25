@@ -1,5 +1,6 @@
 package com.example.tripproject
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Space
 import androidx.activity.ComponentActivity
@@ -56,14 +57,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.tripproject.ui.theme.TealLight
 import com.example.tripproject.ui.theme.TripProjectTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("CoroutineCreationDuringComposition")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +76,17 @@ class MainActivity : ComponentActivity() {
             TripProjectTheme {
 
                 val  navController = rememberNavController()
+
+                lifecycleScope.launch {
+                    val database = DatabaseProvider.getDatabase(applicationContext)
+                    val monedaDao = database.monedaDao()
+
+                    val monedas = monedaDao.getMonedas()
+
+                    monedas.forEach {
+                        println("Moneda: ${it.nombre}")
+                    }
+                }
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),

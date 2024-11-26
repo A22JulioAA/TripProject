@@ -1,12 +1,15 @@
 package com.example.tripproject
 
 import android.annotation.SuppressLint
+import android.graphics.Outline
 import android.os.Bundle
 import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +24,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
@@ -28,9 +32,13 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.BottomAppBarDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
@@ -52,6 +60,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -245,14 +254,21 @@ fun WelcomeScreen (modifier: Modifier = Modifier) {
 }
 
 // Función para crear la pantalla de conversión de divisas
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ConversorDivisasScreen (viewModel: ConversorDivisasViewModel, modifier: Modifier = Modifier) {
+fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
     // Variables para el select de la moneda
-    var monedaSeleccionada by remember { mutableStateOf<Moneda?>(null) }
-    var expandido by remember { mutableStateOf(false) }
+    var monedaSeleccionadaOrigen by remember { mutableStateOf<Moneda?>(null) }
+    var monedaSeleccionadaDestino by remember { mutableStateOf<Moneda?>(null) }
+    var expandidoOrigen by remember { mutableStateOf(false) }
+    var expandidoDestino by remember { mutableStateOf(false) }
 
     // Sacamos todas las monedas almacenadas de la base de datos para ponerlas en el select
-    val monedas by viewModel.monedas.collectAsState(initial = emptyList())
+    val monedas = listOf(
+        Moneda(1, "Euro", "EUR", "€"),
+        Moneda(2, "Dólar", "USD", "$"),
+        Moneda(3, "Peso Argentino", "ARS", "$")
+    )
 
     // Variables para el input de la cantidad
     var cantidad by remember { mutableStateOf("") }
@@ -277,27 +293,75 @@ fun ConversorDivisasScreen (viewModel: ConversorDivisasViewModel, modifier: Modi
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
-            OutlinedButton(onClick = { expandido = true }) {
-                Text(
-                    monedaSeleccionada?.nombre ?: "Selecciona una moneda"
-                )
-            }
-
-            DropdownMenu(
-                expanded = expandido,
-                onDismissRequest = { expandido = false }
+            // Input de moneda ORIGEN
+            ExposedDropdownMenuBox(
+                expanded = expandidoOrigen,
+                onExpandedChange = { expandidoOrigen = it },
             ) {
-                monedas.forEach {moneda ->
-                    DropdownMenuItem(
-                        text = { Text(moneda.nombre) },
-                        onClick = {
-                            monedaSeleccionada = moneda
-                            expandido = false
-                        }
-                    )
+                OutlinedTextField(
+                    value = monedaSeleccionadaOrigen?.nombre ?: "Selecciona una moneda",
+                    onValueChange = {},
+                    label = { Text("Moneda origen") },
+                    readOnly = true,
+                    trailingIcon = {
+                        Icon(Icons.Filled.ArrowDropDown, contentDescription = "Dropdown")
+                    },
+                    modifier = Modifier
+                        .menuAnchor()
+                )
+                ExposedDropdownMenu(
+                    expanded = expandidoOrigen,
+                    onDismissRequest = { expandidoOrigen = false }
+                ) {
+                    monedas.forEach { moneda ->
+                        DropdownMenuItem(
+                            text = { Text(moneda.nombre) },
+                            onClick = {
+                                monedaSeleccionadaOrigen = moneda
+                                expandidoOrigen = false
+                            }
+                        )
+                    }
                 }
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Input de moneda DESTINO
+            ExposedDropdownMenuBox(
+                expanded = expandidoDestino,
+                onExpandedChange = { expandidoDestino = it },
+            ) {
+                OutlinedTextField(
+                    value = monedaSeleccionadaDestino?.nombre ?: "Selecciona una moneda",
+                    onValueChange = {},
+                    label = { Text("Moneda destino") },
+                    readOnly = true,
+                    trailingIcon = {
+                        Icon(Icons.Filled.ArrowDropDown, contentDescription = "Dropdown")
+                    },
+                    modifier = Modifier
+                        .menuAnchor()
+                )
+                ExposedDropdownMenu(
+                    expanded = expandidoDestino,
+                    onDismissRequest = { expandidoDestino = false }
+                ) {
+                    monedas.forEach { moneda ->
+                        DropdownMenuItem(
+                            text = { Text(moneda.nombre) },
+                            onClick = {
+                                monedaSeleccionadaDestino = moneda
+                                expandidoDestino = false
+                            }
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Input para la cantidad a convertir
             OutlinedTextField(
                 value = cantidad,
                 onValueChange = {
@@ -311,10 +375,31 @@ fun ConversorDivisasScreen (viewModel: ConversorDivisasViewModel, modifier: Modi
                     Icon(imageVector = Icons.Default.Refresh, contentDescription = "€")
                 }
             )
+
             Spacer(modifier = Modifier.height(16.dp))
 
-        }
+            // Botón de convertir
+            Button(
+                onClick = {},
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF0288D1)
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text("Convertir")
+            }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "20 $ son 45€",
+                modifier = Modifier
+                    .border(1.dp, Color.Black)
+                    .fillMaxWidth()
+                    .padding(10.dp)
+            )
+        }
     }
 }
 

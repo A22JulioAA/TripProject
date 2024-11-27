@@ -271,14 +271,17 @@ fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
         val apiKey = "8d20a8e45aa2f53e28213f28"
         val retrofit = RetrofitClient.getRetrofitInstance()
         val api = retrofit.create(ExchangeRateApi::class.java)
+
         val monedaBase = monedaSeleccionadaOrigen?.codigo ?: return
 
-        val call: Call<ExchangeRateResponse> = api.obtenerTasasDeCambio(monedaBase = monedaBase)
+        val call: Call<ExchangeRateResponse> = api.obtenerTasasDeCambio(apiKey = apiKey, monedaBase = monedaBase)
 
         call.enqueue(object : Callback<ExchangeRateResponse> {
             override fun onResponse(call: Call<ExchangeRateResponse>, response: Response<ExchangeRateResponse>) {
+                Log.e("Holi", "$response")
                 if (response.isSuccessful && response.body() != null) {
                     val rates = response.body()!!.rates
+                    Log.e("Morreu", "${rates}")
                     tasaDeCambio = rates
                     Log.d("Tasas de cambio", "Tasas: $rates")
                 } else {
@@ -335,7 +338,6 @@ fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
                                 monedaSeleccionadaOrigen = moneda
                                 expandidoOrigen = false
                                 obtenerTasasDeCambio()
-                                print(tasaDeCambio.keys)
                             }
                         )
                     }

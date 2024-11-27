@@ -1,10 +1,26 @@
 <resources>
+    <!-- GENERALES -->
     <string name="app_name">TripProject</string>
-    <string name="topbar_title">TripWise</string>
     <string name="welcome_message">
         Los viajes son para disfrutarlos,
         deja que nosotros hagamos el resto!
     </string>
     <string name="user_name">Julio</string>
     <string name="userGreeting">Bienvenido Julio!</string>
+
+    <!-- TOPBAR -->
+    <string name="topbar_title">TripWise</string>
+    <!-- TOPBAR alt images -->
+    <string name="logo_alt">Avión volando sobre unas montañas</string>
+    <string name="user_icon_alt">Usuario de la aplicación, abrir opciones</string>
+    <!-- TOPBAR secciones menu desplegable -->
+    <string name="seccion_perfil">Mi perfil</string>
+    <string name="seccion_ayuda">Ayuda</string>
+    <string name="seccion_salir">Salir</string>
+
+    <!-- BOTTOMBAR alt images -->
+    <string name="home_alt">Home</string>
+    <string name="gastos_viaje_alt">Gastos de mi viaje</string>
+    <string name="conversor_divisas_alt">Conversor de divisas</string>
+    <string name="planificador_rutas_alt">Planificador de rutas con mapas</string>
 </resources>

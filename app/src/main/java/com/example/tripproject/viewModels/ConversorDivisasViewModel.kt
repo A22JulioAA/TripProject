@@ -1,7 +1,9 @@
-package com.example.tripproject
+package com.example.tripproject.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tripproject.dao.MonedaDAO
+import com.example.tripproject.models.Moneda
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest

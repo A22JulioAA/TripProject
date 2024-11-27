@@ -7,7 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -50,6 +49,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -62,10 +65,10 @@ import com.example.tripproject.ui.theme.TealLight
 import com.example.tripproject.ui.theme.TripProjectTheme
 import retrofit2.Response
 import retrofit2.Callback
-import retrofit2.Retrofit
 import retrofit2.Call
 
 class MainActivity : ComponentActivity() {
+
     @SuppressLint("CoroutineCreationDuringComposition")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +77,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             TripProjectTheme {
 
-                val  navController = rememberNavController()
+                val navController = rememberNavController()
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -102,7 +105,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
+val robotoFontFamily = fontFamily(GoogleFont("Roboto"))
 
 // Función para crear la top bar
 @OptIn(ExperimentalMaterial3Api::class)
@@ -122,14 +125,18 @@ fun TopBar(){
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.logo),
+                        painter = painterResource(id = R.drawable.logo_app),
                         contentDescription = "Logo app",
-                        modifier = Modifier.size(48.dp).weight(1f)
+                        modifier = Modifier.size(70.dp).weight(1f)
                     )
                     Text(
                         text = stringResource(id = R.string.topbar_title),
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.weight(1f)
+                        style = TextStyle(
+                            fontFamily = robotoFontFamily
+                        ),
+                        modifier = Modifier
+                            .weight(1f)
+                            
                     )
                     Image(
                         painter = painterResource(id = R.drawable.user_icon),
@@ -465,7 +472,7 @@ fun MapasYRutasScreen (modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun  MyApp (modifier: Modifier) {
+fun MyApp (modifier: Modifier) {
     WelcomeScreen(modifier)
 }
 
@@ -475,6 +482,24 @@ fun MyTxt(text: String, modifier: Modifier) {
     Text(text = text)
 
 }
+
+@Preview(showBackground = true)
+@Composable
+fun TopBarPreview() {
+    TripProjectTheme {
+        TopBar()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun BottomBarPreview() {
+    TripProjectTheme {
+        val navController = rememberNavController()
+        BottomBar(navController)
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun WelcomePreview() {

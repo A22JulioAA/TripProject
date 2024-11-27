@@ -41,6 +41,10 @@ android {
 }
 
 dependencies {
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.7.5")
+    implementation("androidx.compose.ui:ui-text:1.7.5")
+    implementation ("androidx.compose.material3:material3:1.3.1")
+    implementation ("androidx.compose.ui:ui-text-google-fonts:1.7.5")
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("androidx.room:room-ktx:2.6.1")

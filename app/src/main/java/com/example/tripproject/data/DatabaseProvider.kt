@@ -1,4 +1,4 @@
-package com.example.tripproject
+package com.example.tripproject.data
 
 import android.content.Context
 import androidx.room.Room

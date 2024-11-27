@@ -1,4 +1,4 @@
-package com.example.tripproject
+package com.example.tripproject.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

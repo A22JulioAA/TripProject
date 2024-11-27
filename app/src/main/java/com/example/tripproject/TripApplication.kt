@@ -1,6 +1,8 @@
 package com.example.tripproject
 
 import android.app.Application
+import com.example.tripproject.data.DatabaseProvider
+import com.example.tripproject.models.Moneda
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

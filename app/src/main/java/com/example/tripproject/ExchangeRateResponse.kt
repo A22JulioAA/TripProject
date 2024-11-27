@@ -1,3 +1,8 @@
 package com.example.tripproject
 
-data class ExchangeRateResponse()
+import com.google.gson.annotations.SerializedName
+
+data class ExchangeRateResponse(
+    @SerializedName("rates")
+    val rates: Map<String, Float>
+)

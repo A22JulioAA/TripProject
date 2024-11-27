@@ -1,9 +1,10 @@
-package com.example.tripproject
+package com.example.tripproject.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.example.tripproject.models.Moneda
 import kotlinx.coroutines.flow.Flow
 
 @Dao

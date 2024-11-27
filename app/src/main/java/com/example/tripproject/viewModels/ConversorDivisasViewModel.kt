@@ -1,4 +1,4 @@
-package com.example.tripproject.viewModel
+package com.example.tripproject.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

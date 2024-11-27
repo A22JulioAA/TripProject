@@ -1,14 +1,12 @@
 package com.example.tripproject
 
 import android.annotation.SuppressLint
-import android.graphics.Outline
 import android.os.Bundle
-import android.widget.Space
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,37 +21,25 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -62,21 +48,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.tripproject.models.Moneda
 import com.example.tripproject.ui.theme.TealLight
 import com.example.tripproject.ui.theme.TripProjectTheme
-import kotlinx.coroutines.launch
+import retrofit2.Response
+import retrofit2.Callback
+import retrofit2.Retrofit
+import retrofit2.Call
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("CoroutineCreationDuringComposition")
@@ -114,6 +101,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
 
 // Función para crear la top bar
 @OptIn(ExperimentalMaterial3Api::class)
@@ -275,7 +264,33 @@ fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
 
     // Variables de operaciones
     var cantidadConvertida by remember { mutableStateOf(0.0) }
-    val ratioDeConversion = 1.2
+    var tasaDeCambio by remember { mutableStateOf<Map<String, Float>>(emptyMap()) }
+
+    // Función para obtener las tasas de cambio
+    fun obtenerTasasDeCambio() {
+        val apiKey = "8d20a8e45aa2f53e28213f28"
+        val retrofit = RetrofitClient.getRetrofitInstance()
+        val api = retrofit.create(ExchangeRateApi::class.java)
+        val monedaBase = monedaSeleccionadaOrigen?.codigo ?: return
+
+        val call: Call<ExchangeRateResponse> = api.obtenerTasasDeCambio(monedaBase = monedaBase)
+
+        call.enqueue(object : Callback<ExchangeRateResponse> {
+            override fun onResponse(call: Call<ExchangeRateResponse>, response: Response<ExchangeRateResponse>) {
+                if (response.isSuccessful && response.body() != null) {
+                    val rates = response.body()!!.rates
+                    tasaDeCambio = rates
+                    Log.d("Tasas de cambio", "Tasas: $rates")
+                } else {
+                    Log.e("Tasas de cambio", "Error en la respuesta de la API")
+                }
+            }
+
+            override fun onFailure(call: Call<ExchangeRateResponse>, t: Throwable) {
+                Log.e("Tasas de cambio", "Error en la conexión: ${t.message}")
+            }
+        })
+    }
 
     Surface (
         modifier = modifier.fillMaxSize(),
@@ -319,6 +334,8 @@ fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
                             onClick = {
                                 monedaSeleccionadaOrigen = moneda
                                 expandidoOrigen = false
+                                obtenerTasasDeCambio()
+                                print(tasaDeCambio.keys)
                             }
                         )
                     }
@@ -380,7 +397,20 @@ fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
 
             // Botón de convertir
             Button(
-                onClick = {},
+                onClick = {
+                    val cantidadNumerica = cantidad.toDoubleOrNull() ?: 0.0
+                    if (monedaSeleccionadaOrigen != null &&
+                        monedaSeleccionadaDestino != null &&
+                        cantidadNumerica > 0
+                        ) {
+                        val tasa = tasaDeCambio[monedaSeleccionadaDestino?.codigo]
+                        if (tasa != null) {
+                            cantidadConvertida = cantidadNumerica * tasa
+                        } else {
+                            Log.e("Conversión", "Tasa de cambio no encontrada")
+                        }
+                    }
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF0288D1)
                 ),
@@ -392,13 +422,12 @@ fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(
-                text = "20 $ son 45€",
-                modifier = Modifier
-                    .border(1.dp, Color.Black)
-                    .fillMaxWidth()
-                    .padding(10.dp)
-            )
+            if (cantidadConvertida > 0) {
+                Text(
+                    text = "Resultado: $cantidadConvertida ${monedaSeleccionadaDestino?.simbolo}",
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+            }
         }
     }
 }

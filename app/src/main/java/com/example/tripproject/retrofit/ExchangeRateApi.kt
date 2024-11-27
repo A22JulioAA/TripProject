@@ -1,4 +1,7 @@
 package com.example.tripproject.retrofit
 
-interface ExchangeRateApi {
+import retrofit2.http.GET
+
+public interface ExchangeRateApi {
+
 }

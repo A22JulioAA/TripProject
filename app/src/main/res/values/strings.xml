@@ -23,4 +23,9 @@
     <string name="gastos_viaje_alt">Gastos de mi viaje</string>
     <string name="conversor_divisas_alt">Conversor de divisas</string>
     <string name="planificador_rutas_alt">Planificador de rutas con mapas</string>
+
+    <!-- CALCULADORA GASTOS -->
+    <string name="presentacion_calculadora_gastos">Calcula los gastos aproximados en tu viaje
+        en coche, a tu medida teniendo en cuenta tus preferencias
+    </string>
 </resources>

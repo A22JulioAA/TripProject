@@ -129,7 +129,7 @@ fun TopBar(){
 
         TopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                containerColor = Color(0xFF63A002),
                 titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
             title = {
@@ -210,7 +210,7 @@ fun TopBar(){
 @Composable
 fun BottomBar (navController: NavController) {
     NavigationBar (
-        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        containerColor = Color(0xFF63A002),
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
     ) {
         NavigationBarItem(
@@ -230,7 +230,9 @@ fun BottomBar (navController: NavController) {
         )
 
         VerticalDivider(
-            modifier = Modifier.height(56.dp)
+            modifier = Modifier
+                .height(56.dp)
+                .background(color = Color.Black)
         )
 
         NavigationBarItem(
@@ -247,7 +249,9 @@ fun BottomBar (navController: NavController) {
         )
 
         VerticalDivider(
-            modifier = Modifier.height(56.dp)
+            modifier = Modifier
+                .height(56.dp)
+                .background(color = Color.Black)
         )
 
         NavigationBarItem(
@@ -265,7 +269,9 @@ fun BottomBar (navController: NavController) {
         )
 
         VerticalDivider(
-            modifier = Modifier.height(56.dp)
+            modifier = Modifier
+                .height(56.dp)
+                .background(color = Color.Black)
         )
 
         NavigationBarItem(

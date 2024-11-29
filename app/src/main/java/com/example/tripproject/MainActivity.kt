@@ -77,6 +77,7 @@ import com.example.tripproject.models.Moneda
 import com.example.tripproject.screens.ConversorDivisasScreen
 import com.example.tripproject.screens.GastosViajeScreen
 import com.example.tripproject.screens.MapasYRutasScreen
+import com.example.tripproject.screens.WelcomeScreen
 import com.example.tripproject.ui.theme.TealLight
 import com.example.tripproject.ui.theme.TripProjectTheme
 import retrofit2.Response
@@ -210,7 +211,7 @@ fun TopBar(){
 @Composable
 fun BottomBar (navController: NavController) {
     NavigationBar (
-        containerColor = Color(0xFF63A002),
+        containerColor = Color.White,
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
     ) {
         NavigationBarItem(
@@ -286,38 +287,6 @@ fun BottomBar (navController: NavController) {
             selected = navController.currentBackStackEntry?.destination?.route == "mapasYRutasScreen",
             onClick = { navController.navigate("mapasYRutasScreen") }
         )
-    }
-}
-
-// Función para crear la pantalla de inicio
-@Composable
-fun WelcomeScreen (modifier: Modifier = Modifier) {
-    Surface(
-        modifier = modifier.fillMaxSize(),
-        color = TealLight
-    ) {
-        Box {
-            Image(
-                painter = painterResource(id = R.drawable.van_background_welcome),
-                contentDescription = "Van trip background",
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
-        }
-        Column (
-            modifier = Modifier.padding(12.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Text(
-                text = stringResource(id = R.string.userGreeting),
-                modifier = Modifier.padding(12.dp)
-            )
-
-            Text(
-                text = stringResource(id = R.string.welcome_message),
-                modifier = Modifier.padding(12.dp)
-            )
-        }
     }
 }
 

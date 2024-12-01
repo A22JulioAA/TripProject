@@ -1,6 +1,10 @@
 package com.example.tripproject.screens
 
+import androidx.compose.foundation.shape.CircleShape
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,13 +32,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.example.tripproject.ExchangeRateApi
+import androidx.compose.ui.unit.sp
 import com.example.tripproject.ExchangeRateResponse
 import com.example.tripproject.RetrofitClient
 import com.example.tripproject.models.Moneda
+import com.example.tripproject.retrofit.ExchangeRateApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -64,25 +71,24 @@ fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
     var tasaDeCambio by remember { mutableStateOf<Map<String, Float>>(emptyMap()) }
 
     // Función para obtener las tasas de cambio
-    fun obtenerTasasDeCambio() {
-        val apiKey = "8d20a8e45aa2f53e28213f28"
+    fun obtenerTasasDeCambio(monedaOrigen: String, monedaDestino: String, cantidad: Double) {
         val retrofit = RetrofitClient.getRetrofitInstance()
         val api = retrofit.create(ExchangeRateApi::class.java)
 
-        val monedaBase = monedaSeleccionadaOrigen?.codigo ?: return
-
-        val call: Call<ExchangeRateResponse> = api.obtenerTasasDeCambio(apiKey = apiKey, monedaBase = monedaBase)
+        val call: Call<ExchangeRateResponse> = api.obtenerTasaDeCambio(
+            monedaOrigen,
+            monedaDestino,
+            cantidad
+        )
 
         call.enqueue(object : Callback<ExchangeRateResponse> {
             override fun onResponse(call: Call<ExchangeRateResponse>, response: Response<ExchangeRateResponse>) {
-                Log.e("Holi", "$response")
                 if (response.isSuccessful && response.body() != null) {
-                    val rates = response.body()!!.rates
-                    Log.e("Morreu", "${rates}")
-                    tasaDeCambio = rates
-                    Log.d("Tasas de cambio", "Tasas: $rates")
+                    val resultado = response.body()!!.result
+                    cantidadConvertida = resultado
+                    Log.d("Tasa de cambio", "Resultado: $resultado")
                 } else {
-                    Log.e("Tasas de cambio", "Error en la respuesta de la API")
+                    Log.e("Tasa de cambio", "Error en la respuesta")
                 }
             }
 
@@ -134,7 +140,6 @@ fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
                             onClick = {
                                 monedaSeleccionadaOrigen = moneda
                                 expandidoOrigen = false
-                                obtenerTasasDeCambio()
                             }
                         )
                     }
@@ -202,16 +207,15 @@ fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
                         monedaSeleccionadaDestino != null &&
                         cantidadNumerica > 0
                     ) {
-                        val tasa = tasaDeCambio[monedaSeleccionadaDestino?.codigo]
-                        if (tasa != null) {
-                            cantidadConvertida = cantidadNumerica * tasa
-                        } else {
-                            Log.e("Conversión", "Tasa de cambio no encontrada")
-                        }
+                        obtenerTasasDeCambio(
+                            monedaSeleccionadaOrigen?.codigo ?: "",
+                            monedaSeleccionadaDestino?.codigo ?: "",
+                            cantidadNumerica
+                        )
                     }
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF0288D1)
+                    containerColor = Color(0xFF63A002)
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -222,9 +226,21 @@ fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
 
             if (cantidadConvertida > 0) {
+                val cantidadConvertidaFormateada = String.format("%.2f", cantidadConvertida)
                 Text(
-                    text = "Resultado: $cantidadConvertida ${monedaSeleccionadaDestino?.simbolo}",
-                    modifier = Modifier.padding(top = 16.dp)
+                    text = "Resultado: $cantidadConvertidaFormateada ${monedaSeleccionadaDestino?.simbolo}",
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .background(Color(0xFF63A002))
+                        .padding(20.dp)
+                        .border(2.dp, Color(0xFF63A002))
+                        .clickable {  },
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp,
+                    )
                 )
             }
         }

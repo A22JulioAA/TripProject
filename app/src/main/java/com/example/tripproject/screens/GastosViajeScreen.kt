@@ -1,44 +1,63 @@
 package com.example.tripproject.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import android.icu.text.DecimalFormat
+import androidx.compose.foundation.clickable
+import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.tripproject.R
 
-// Función para crear la pantalla de gastos de viaje
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GastosViajeScreen (modifier: Modifier = Modifier) {
-    var kilometros = remember { mutableStateOf("") }
+fun GastosViajeScreen(modifier: Modifier = Modifier) {
+    // Variables de los campos del formulario
+    var kilometros by remember { mutableStateOf("") }
+    var tipoCombustible by remember { mutableStateOf("Seleccionar tipo combustible") }
+    var expandedCombustible by remember { mutableStateOf(false) }
+    var precioCombustible by remember { mutableStateOf("") }
+    var consumoCombustible by remember { mutableStateOf("Seleccionar consumo de combustible") }
+    var expandedConsumo by remember { mutableStateOf(false) }
 
-    Surface (
+    // Variable para el gasto total
+    var gastoTotal by remember { mutableStateOf("") }
+
+    // Lista de opciones para los seleccionables
+    val tiposCombustible = listOf("Gasolina", "Gasóleo A", "Gasóleo B", "Gasóleo A+")
+    val consumos = List(191) { (it + 21) / 10.0 }.map { "%.1f l/100km".format(it) }
+
+    fun calcularGastoTotal () {
+        try {
+            val km = kilometros.toDoubleOrNull()
+            val consumo = consumoCombustible.split(" ")[0].toDoubleOrNull()
+            val precio = precioCombustible.toDoubleOrNull()
+
+            if (km != null && consumo != null && precio != null) {
+                val total = (km / 100) * consumo * precio
+                gastoTotal = "Gasto Total: €${DecimalFormat("#.##").format(total)}"
+            } else {
+                gastoTotal = "Por favor, introduce todos los valores."
+            }
+        } catch (e: Exception) {
+            gastoTotal = "Hubo un error al calcular el gasto."
+        }
+    }
+
+    Surface(
         modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        Column (
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(16.dp)
         ) {
             Text(
                 text = stringResource(R.string.presentacion_calculadora_gastos),
@@ -46,27 +65,135 @@ fun GastosViajeScreen (modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
+            // Campos de kilómetros a recorrer
             OutlinedTextField(
-                value = kilometros.value,
+                value = kilometros,
                 onValueChange = { nuevaCantidad ->
                     if (nuevaCantidad.all { it.isDigit() } || nuevaCantidad.isEmpty()) {
-                        kilometros.value = nuevaCantidad
+                        kilometros = nuevaCantidad
                     }
                 },
                 label = { Text("Kilómetros a recorrer") },
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
+                    .fillMaxWidth(),
                 placeholder = { Text("Introduce los kilómetros") },
                 singleLine = true
-
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Campos de tipo de combustible con ExposedDropdownMenuBox
+            ExposedDropdownMenuBox(
+                expanded = expandedCombustible,
+                onExpandedChange = { expandedCombustible = it },
+            ) {
+                OutlinedTextField(
+                    value = tipoCombustible,
+                    onValueChange = {},
+                    label = { Text("Tipo de combustible") },
+                    readOnly = true,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    trailingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = "Dropdown Icon"
+                        )
+                    }
+                )
+                ExposedDropdownMenu(
+                    expanded = expandedCombustible,
+                    onDismissRequest = { expandedCombustible = false }
+                ) {
+                    tiposCombustible.forEach { tipo ->
+                        DropdownMenuItem(
+                            text = { Text(tipo) },
+                            onClick = {
+                                tipoCombustible = tipo
+                                expandedCombustible = false
+                            }
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Campos para el precio de combustible
+            OutlinedTextField(
+                value = precioCombustible,
+                onValueChange = { nuevoValor ->
+                    if (nuevoValor.matches(Regex("^\\d*\\.?\\d{0,2}\$"))) {
+                        precioCombustible = nuevoValor
+                    }
+                },
+                label = { Text("Precio del combustible (€)") },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Decimal
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                placeholder = { Text("Introduce el precio") },
+                singleLine = true
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Campos para el consumo del combustible con ExposedDropdownMenuBox
+            ExposedDropdownMenuBox(
+                expanded = expandedConsumo,
+                onExpandedChange = { expandedConsumo = it },
+            ) {
+                OutlinedTextField(
+                    value = consumoCombustible,
+                    onValueChange = {},
+                    label = { Text("Consumo de combustible") },
+                    readOnly = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { expandedConsumo = true },
+                    trailingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = "Dropdown Icon"
+                        )
+                    }
+                )
+                ExposedDropdownMenu(
+                    expanded = expandedConsumo,
+                    onDismissRequest = { expandedConsumo = false }
+                ) {
+                    consumos.forEach { tipo ->
+                        DropdownMenuItem(
+                            text = { Text(tipo) },
+                            onClick = {
+                                consumoCombustible = tipo
+                                expandedConsumo = false
+                            }
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = { calcularGastoTotal() },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Calcular")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = gastoTotal,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier
+                    .padding(top = 16.dp)
+            )
         }
     }
 }

@@ -69,7 +69,7 @@ fun WelcomeScreen(rutaViewModel: RutaViewModel, modifier: Modifier = Modifier) {
                 contentDescription = "Van trip background",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp), // Ajusta el tamaño de la franja de la imagen
+                    .height(200.dp),
                 contentScale = ContentScale.Crop
             )
 

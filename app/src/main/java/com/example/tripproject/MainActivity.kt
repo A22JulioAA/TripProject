@@ -322,13 +322,14 @@ fun BottomBarPreview() {
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun WelcomePreview() {
-//    TripProjectTheme {
-//        MyApp(modifier = Modifier.fillMaxSize())
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+fun WelcomePreview() {
+    val rutaViewModel: RutaViewModel = viewModel()
+    TripProjectTheme {
+        MyApp(modifier = Modifier.fillMaxSize(), rutaViewModel)
+    }
+}
 
 @Preview(showBackground = true)
 @Composable

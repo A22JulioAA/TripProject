@@ -41,8 +41,8 @@ android {
 }
 
 dependencies {
-    implementation("com.mapbox.maps:maps-compose:10.0.0")
-    implementation("com.mapbox.maps:maps-sdk:10.0.0")
+    implementation("com.mapbox.maps:android:11.8.0")
+    implementation("com.mapbox.extension:maps-compose:11.8.0")
     implementation("androidx.compose.ui:ui-text-google-fonts:1.7.5")
     implementation("androidx.compose.ui:ui-text:1.7.5")
     implementation ("androidx.compose.material3:material3:1.3.1")

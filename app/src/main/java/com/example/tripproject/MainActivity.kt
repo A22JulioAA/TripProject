@@ -80,12 +80,13 @@ import com.example.tripproject.screens.MapasYRutasScreen
 import com.example.tripproject.screens.WelcomeScreen
 import com.example.tripproject.ui.theme.TealLight
 import com.example.tripproject.ui.theme.TripProjectTheme
+import com.mapbox.android.core.permissions.PermissionsManager
 import retrofit2.Response
 import retrofit2.Callback
 import retrofit2.Call
 
 class MainActivity : ComponentActivity() {
-
+    
     @SuppressLint("CoroutineCreationDuringComposition")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {

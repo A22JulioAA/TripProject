@@ -13,6 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TripProject"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.mapbox.AccessToken"
+            android:value="@string/mapbox_access_token" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

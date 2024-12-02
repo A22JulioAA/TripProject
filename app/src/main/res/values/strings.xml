@@ -1,6 +1,7 @@
 <resources>
     <!-- GENERALES -->
     <string name="app_name">TripProject</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoieHh4dWxpbyIsImEiOiJjbTQ2eWtiNGQxYWtmMmtxeGFhem5hNTEyIn0.JKMi1dJsZqJuNAHnp5wlYw</string>
     <string name="welcome_message">
         Los viajes son para disfrutarlos,
         deja que nosotros hagamos el resto!

@@ -86,7 +86,7 @@ import retrofit2.Callback
 import retrofit2.Call
 
 class MainActivity : ComponentActivity() {
-    
+
     @SuppressLint("CoroutineCreationDuringComposition")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -26,7 +26,7 @@ fun MapasYRutasScreen (modifier: Modifier = Modifier) {
     val mapView = rememberMapViewportState() {
         setCameraOptions {
             zoom(2.0)
-            center(Point.fromLngLat(-98.0, 39.5))
+            center(Point.fromLngLat( -8.7049, 42.8756))
             pitch(0.0)
             bearing(0.0)
         }
@@ -45,7 +45,7 @@ fun MapasYRutasScreen (modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(16.dp))
 
         MapboxMap(
-            Modifier.fillMaxSize(),
+//            Modifier.fillMaxSize(),
             mapViewportState = mapView,
             style = {
                 MapStyle(style = Style.SATELLITE)

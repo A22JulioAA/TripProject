@@ -26,6 +26,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,16 +43,15 @@ import com.example.tripproject.ui.theme.TealLight
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.setValue
+import com.example.tripproject.models.Ruta
+import com.example.tripproject.viewModels.RutaViewModel
 
 
 data class Ruta(val nombre: String, val descripcion: String)
 
 @Composable
-fun WelcomeScreen(modifier: Modifier = Modifier) {
-    val rutas = remember { mutableStateListOf(
-        Ruta("Ruta 1", "Descripción de la ruta 1."),
-        Ruta("Ruta 2", "Descripción de la ruta 2."),
-    ) }
+fun WelcomeScreen(rutaViewModel: RutaViewModel, modifier: Modifier = Modifier) {
+    val rutas by rutaViewModel.rutas.collectAsState(emptyList())
 
     var isDialogOpen by remember { mutableStateOf(false) }
     var nombreRuta by remember { mutableStateOf("") }
@@ -123,7 +123,7 @@ fun WelcomeScreen(modifier: Modifier = Modifier) {
                         descripcionRuta = descripcionRuta,
                         onRouteNameChange = { nombreRuta = it },
                         onRouteCreated = { nombre, descripcion ->
-                            rutas.add(Ruta(nombre, descripcion))
+                            rutaViewModel.insertRuta(Ruta(nombre, descripcion))
                             nombreRuta = ""
                             descripcionRuta = ""
                             isDialogOpen = false
@@ -136,7 +136,7 @@ fun WelcomeScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun RutaItem (ruta: Ruta) {
+fun RutaItem (ruta: com.example.tripproject.models.Ruta) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

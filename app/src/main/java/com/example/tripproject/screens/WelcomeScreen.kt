@@ -46,9 +46,6 @@ import androidx.compose.runtime.setValue
 import com.example.tripproject.models.Ruta
 import com.example.tripproject.viewModels.RutaViewModel
 
-
-data class Ruta(val nombre: String, val descripcion: String)
-
 @Composable
 fun WelcomeScreen(rutaViewModel: RutaViewModel, modifier: Modifier = Modifier) {
     val rutas by rutaViewModel.rutas.collectAsState(emptyList())
@@ -86,7 +83,7 @@ fun WelcomeScreen(rutaViewModel: RutaViewModel, modifier: Modifier = Modifier) {
                 Text(
                     text = "Tus rutas",
                     style = MaterialTheme.typography.headlineLarge,
-                    modifier = Modifier.padding(top = 8.dp) // Espaciado superior
+                    modifier = Modifier.padding(top = 8.dp)
                 )
 
                 // LazyColumn para las rutas
@@ -123,7 +120,9 @@ fun WelcomeScreen(rutaViewModel: RutaViewModel, modifier: Modifier = Modifier) {
                         descripcionRuta = descripcionRuta,
                         onRouteNameChange = { nombreRuta = it },
                         onRouteCreated = { nombre, descripcion ->
-                            rutaViewModel.insertRuta(Ruta(nombre, descripcion))
+                            val nuevaRuta = Ruta(0, nombre, descripcion)
+                            rutaViewModel.insertRuta(nuevaRuta)
+
                             nombreRuta = ""
                             descripcionRuta = ""
                             isDialogOpen = false
@@ -209,7 +208,7 @@ fun FormDialog (
         confirmButton = {
             Button(
                 onClick = {
-                    println("Ruta creada: Nombre ${nombreRuta}, Descripcion: ${descripcionRuta}")
+                    onRouteCreated(nombreRuta, descripcionRuta)
                     onDismiss()
                 }
             ) {

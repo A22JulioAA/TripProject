@@ -13,7 +13,7 @@ interface RutaDAO {
     suspend fun insert(ruta: Ruta)
 
     @Query("SELECT * FROM ruta")
-    suspend fun getAllRutas(): Flow<List<Ruta>>
+    fun getAllRutas(): Flow<List<Ruta>>
 
     @Query("SELECT * FROM ruta WHERE id = :rutaId")
     suspend fun getRutaById(rutaId: Int): Ruta

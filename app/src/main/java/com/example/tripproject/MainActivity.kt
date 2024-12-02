@@ -68,6 +68,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
@@ -80,7 +81,7 @@ import com.example.tripproject.screens.MapasYRutasScreen
 import com.example.tripproject.screens.WelcomeScreen
 import com.example.tripproject.ui.theme.TealLight
 import com.example.tripproject.ui.theme.TripProjectTheme
-import com.mapbox.android.core.permissions.PermissionsManager
+import com.example.tripproject.viewModels.RutaViewModel
 import retrofit2.Response
 import retrofit2.Callback
 import retrofit2.Call
@@ -96,6 +97,7 @@ class MainActivity : ComponentActivity() {
             TripProjectTheme {
 
                 val navController = rememberNavController()
+                val rutaViewModel: RutaViewModel = viewModel()
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -104,7 +106,7 @@ class MainActivity : ComponentActivity() {
                     content = { innerPadding ->
                         NavHost(navController = navController, startDestination = "home") {
                             composable("home") {
-                                MyApp(modifier = Modifier.padding(innerPadding))
+                                MyApp(modifier = Modifier.padding(innerPadding), rutaViewModel = rutaViewModel)
                             }
                             composable("conversorDivisasScreen") {
                                 ConversorDivisasScreen(modifier = Modifier.padding(innerPadding))
@@ -292,8 +294,8 @@ fun BottomBar (navController: NavController) {
 }
 
 @Composable
-fun MyApp (modifier: Modifier) {
-    WelcomeScreen(modifier)
+fun MyApp (modifier: Modifier, rutaViewModel: RutaViewModel) {
+    WelcomeScreen(rutaViewModel, modifier)
 }
 
 
@@ -320,13 +322,13 @@ fun BottomBarPreview() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun WelcomePreview() {
-    TripProjectTheme {
-        MyApp(modifier = Modifier.fillMaxSize())
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun WelcomePreview() {
+//    TripProjectTheme {
+//        MyApp(modifier = Modifier.fillMaxSize())
+//    }
+//}
 
 @Preview(showBackground = true)
 @Composable

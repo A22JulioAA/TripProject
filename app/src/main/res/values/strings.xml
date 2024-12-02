@@ -28,4 +28,5 @@
     <string name="presentacion_calculadora_gastos">Calcula los gastos aproximados en tu viaje
         en coche, a tu medida teniendo en cuenta tus preferencias
     </string>
+    <string name="error_faltan_datos">Por favor, introduce todos los valores correctamente</string>
 </resources>

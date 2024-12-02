@@ -30,8 +30,8 @@ fun GastosViajeScreen(modifier: Modifier = Modifier) {
     var gastoTotal by remember { mutableStateOf("") }
 
     // Lista de opciones para los seleccionables
-    val tiposCombustible = listOf("Gasolina", "Gasóleo A", "Gasóleo B", "Gasóleo A+")
-    val consumos = List(191) { (it + 21) / 10.0 }.map { "%.1f l/100km".format(it) }
+    val tiposCombustible: List<String>  = listOf("Gasolina", "Gasóleo A", "Gasóleo B", "Gasóleo A+")
+    val consumos: List<String> = List(191) { (it + 21) / 10.0 }.map { "%.1f l/100km".format(it) }
 
     fun calcularGastoTotal () {
         try {
@@ -43,7 +43,7 @@ fun GastosViajeScreen(modifier: Modifier = Modifier) {
                 val total = (km / 100) * consumo * precio
                 gastoTotal = "Gasto Total: €${DecimalFormat("#.##").format(total)}"
             } else {
-                gastoTotal = "Por favor, introduce todos los valores."
+                gastoTotal = "Por favor, introduce todos los valores correctamente"
             }
         } catch (e: Exception) {
             gastoTotal = "Hubo un error al calcular el gasto."
@@ -86,7 +86,7 @@ fun GastosViajeScreen(modifier: Modifier = Modifier) {
             // Campos de tipo de combustible con ExposedDropdownMenuBox
             ExposedDropdownMenuBox(
                 expanded = expandedCombustible,
-                onExpandedChange = { expandedCombustible = it },
+                onExpandedChange = { expandedCombustible = !expandedCombustible },
             ) {
                 OutlinedTextField(
                     value = tipoCombustible,
@@ -94,6 +94,7 @@ fun GastosViajeScreen(modifier: Modifier = Modifier) {
                     label = { Text("Tipo de combustible") },
                     readOnly = true,
                     modifier = Modifier
+                        .menuAnchor()
                         .fillMaxWidth(),
                     trailingIcon = {
                         Icon(
@@ -106,11 +107,11 @@ fun GastosViajeScreen(modifier: Modifier = Modifier) {
                     expanded = expandedCombustible,
                     onDismissRequest = { expandedCombustible = false }
                 ) {
-                    tiposCombustible.forEach { tipo ->
+                    tiposCombustible.forEach {
                         DropdownMenuItem(
-                            text = { Text(tipo) },
+                            text = { Text(it) },
                             onClick = {
-                                tipoCombustible = tipo
+                                tipoCombustible = it
                                 expandedCombustible = false
                             }
                         )
@@ -128,13 +129,12 @@ fun GastosViajeScreen(modifier: Modifier = Modifier) {
                         precioCombustible = nuevoValor
                     }
                 },
-                label = { Text("Precio del combustible (€)") },
+                label = { Text("Precio del combustible / L (€)") },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Decimal
                 ),
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
+                    .fillMaxWidth(),
                 placeholder = { Text("Introduce el precio") },
                 singleLine = true
             )
@@ -153,7 +153,7 @@ fun GastosViajeScreen(modifier: Modifier = Modifier) {
                     readOnly = true,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { expandedConsumo = true },
+                        .menuAnchor(),
                     trailingIcon = {
                         Icon(
                             imageVector = Icons.Default.ArrowDropDown,

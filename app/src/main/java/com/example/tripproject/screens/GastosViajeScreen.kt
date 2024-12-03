@@ -5,16 +5,23 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.tripproject.R
@@ -61,6 +68,7 @@ fun GastosViajeScreen(modifier: Modifier = Modifier) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
             // Imagen como una franja en la parte superior
             Image(
@@ -76,10 +84,20 @@ fun GastosViajeScreen(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .padding(16.dp)
             ) {
+                
                 Text(
                     text = stringResource(R.string.presentacion_calculadora_gastos),
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(bottom = 24.dp)
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        shadow = Shadow(
+                            color = Color.Black.copy(alpha = 0.3f),
+                            offset = Offset(2f, 2f),
+                            blurRadius = 4f
+                        )
+                    ),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 )
 
                 // Campos de kilómetros a recorrer
@@ -212,9 +230,15 @@ fun GastosViajeScreen(modifier: Modifier = Modifier) {
 
                 Text(
                     text = gastoTotal,
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold
+                    ),
                     modifier = Modifier
                         .padding(top = 16.dp)
+                        .fillMaxWidth()
+                        .wrapContentWidth(align = Alignment.CenterHorizontally),
+                    textAlign = TextAlign.Center
                 )
             }
 

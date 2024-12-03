@@ -8,6 +8,7 @@
     </string>
     <string name="user_name">Julio</string>
     <string name="userGreeting">Bienvenido Julio!</string>
+    <string name="boton_cancelar">Cancelar</string>
 
     <!-- TOPBAR -->
     <string name="topbar_title">TripWise</string>
@@ -24,6 +25,15 @@
     <string name="gastos_viaje_alt">Gastos de mi viaje</string>
     <string name="conversor_divisas_alt">Conversor de divisas</string>
     <string name="planificador_rutas_alt">Planificador de rutas con mapas</string>
+
+    <!-- WELCOME -->
+    <string name="presentacion_welcome_rutas">Tu rutas</string>
+    <string name="nueva_ruta_formulario_titulo">Nueva ruta</string>
+    <string name="campo_nombre_formulario">Nombre</string>
+    <string name="campo_descripcion_formulario">Descripción</string>
+    <string name="campo_nombre_formulario_placeholder">Ejemplo: Camino Inca</string>
+    <string name="campo_descripcion_formulario_placeholder">Ejemplo: Ruta de 4 días por Cusco</string>
+    <string name="boton_aceptar_nueva_ruta">Crear</string>
 
     <!-- CALCULADORA GASTOS -->
     <string name="presentacion_calculadora_gastos">Calcula los gastos aproximados en tu viaje

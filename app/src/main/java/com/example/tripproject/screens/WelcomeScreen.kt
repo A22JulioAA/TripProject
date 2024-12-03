@@ -5,11 +5,14 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -21,6 +24,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -43,6 +47,11 @@ import com.example.tripproject.ui.theme.TealLight
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import com.example.tripproject.models.Ruta
 import com.example.tripproject.viewModels.RutaViewModel
 
@@ -81,9 +90,19 @@ fun WelcomeScreen(rutaViewModel: RutaViewModel, modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "Tus rutas",
-                    style = MaterialTheme.typography.headlineLarge,
-                    modifier = Modifier.padding(top = 8.dp)
+                    text = stringResource(R.string.presentacion_welcome_rutas),
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        shadow = Shadow(
+                            color = Color.Black.copy(alpha = 0.3f),
+                            offset = Offset(2f, 2f),
+                            blurRadius = 4f
+                        )
+                    ),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .padding(16.dp)
                 )
 
                 // LazyColumn para las rutas
@@ -139,26 +158,43 @@ fun RutaItem (ruta: com.example.tripproject.models.Ruta) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(4.dp)
+            .border(1.dp, Color.LightGray, MaterialTheme.shapes.medium),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
         ),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF63A002)
-        )
     ) {
+        Row (
+            modifier = Modifier
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ruta),
+                contentDescription = "Ruta",
+                tint = Color(0xFF63A002),
+                modifier = Modifier.size(48.dp)
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+        }
+
         Column (
             modifier = Modifier
-                .padding(16.dp)
+                .padding(20.dp)
         ) {
             Text(
                 text = ruta.nombre,
-                style = MaterialTheme.typography.headlineLarge
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                color = Color.Black
             )
-            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = ruta.descripcion,
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray
             )
         }
     }
@@ -177,31 +213,35 @@ fun FormDialog (
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text("Completa los siguientes campos")
+            Text(
+                stringResource(R.string.nueva_ruta_formulario_titulo),
+                style = MaterialTheme.typography.headlineSmall,
+                color = Color(0xFF63A002)
+            )
         },
         text = {
             Column (
                 modifier = Modifier
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text("Nombre de la ruta")
                 OutlinedTextField(
                     value = nombreRuta,
                     onValueChange = onRouteNameChange,
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = { Text("Nombre") }
+                    label = { Text(stringResource(R.string.campo_nombre_formulario)) },
+                    placeholder = { Text(stringResource(R.string.campo_nombre_formulario_placeholder)) }
                 )
-
-                Text("Descripción de la ruta")
 
                 OutlinedTextField(
                     value = descripcionRuta,
                     onValueChange = onRouteDescriptionChange,
                     modifier = Modifier
                         .fillMaxWidth(),
-                    label = { Text("Descripción") }
+                    label = { Text(stringResource(R.string.campo_descripcion_formulario)) },
+                    placeholder = { Text(stringResource(R.string.campo_descripcion_formulario_placeholder)) }
                 )
             }
         },
@@ -212,12 +252,15 @@ fun FormDialog (
                     onDismiss()
                 }
             ) {
-                Text("Crear Ruta")
+                Text(stringResource(R.string.boton_aceptar_nueva_ruta))
             }
         },
         dismissButton = {
             Button(onClick = { onDismiss() }) {
-                Text("Cancelar")
+                Text(
+                    stringResource(R.string.boton_cancelar),
+                    color = Color.Gray
+                )
             }
         }
     )

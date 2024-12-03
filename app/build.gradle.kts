@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.fir.declarations.builder.buildScript
+
 plugins {
     id("com.google.devtools.ksp")
     alias(libs.plugins.android.application)
@@ -37,10 +39,12 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
 dependencies {
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
     implementation("com.mapbox.maps:android:11.8.0")
     implementation("com.mapbox.extension:maps-compose:11.8.0")
     implementation("androidx.compose.ui:ui-text-google-fonts:1.7.5")

@@ -1,7 +1,7 @@
 # Descripción del Proyecto
 
 En este proyecto se creará una aplicación Android para la gestión y administración de gastos en viajes. En ella, el usuario podrá utilizar diversas funciones para calcular el coste de combustible de su vehículo, los gastos fijos de su alojamiento y transporte o el cambio de divisas que deberá hacer si se trata de un viaje internacional.
-Contará con secciones para calcular costes, cambiar divisas e informarse de la climatología de la región.
+Contará con secciones para calcular costes, cambiar divisas e informarse con un mapa del mundo.
 
 ## Justificación del Proyecto
 

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -34,13 +35,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tripproject.ExchangeRateResponse
@@ -149,9 +155,19 @@ fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
             ) {
 
                 Text(
-                    text = "Conversor de divisas",
-                    style = MaterialTheme.typography.headlineLarge,
-                    modifier = Modifier.padding(bottom = 24.dp)
+                    text = stringResource(R.string.conversor_divisas_alt),
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        shadow = Shadow(
+                            color = Color.Black.copy(alpha = 0.3f),
+                            offset = Offset(2f, 2f),
+                            blurRadius = 4f
+                        )
+                    ),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .padding(16.dp)
                 )
 
                 // Input de moneda ORIGEN
@@ -267,20 +283,46 @@ fun ConversorDivisasScreen (modifier: Modifier = Modifier) {
 
                 if (cantidadConvertida > 0) {
                     val cantidadConvertidaFormateada = String.format("%.2f", cantidadConvertida)
+
                     Text(
-                        text = "Resultado: $cantidadConvertidaFormateada ${monedaSeleccionadaDestino?.simbolo}",
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth()
-                            .background(Color(0xFF63A002))
-                            .padding(20.dp)
-                            .border(2.dp, Color(0xFF63A002))
-                            .clickable { },
-                        style = MaterialTheme.typography.headlineSmall.copy(
-                            color = Color.White,
+                        text = "¡Convierte para viajar!",
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 24.sp,
-                        )
+                            fontSize = 22.sp
+                        ),
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                            .fillMaxWidth()
+                            .wrapContentWidth(align = Alignment.CenterHorizontally),
+                        textAlign = TextAlign.Center
+                    )
+
+                    Text(
+                        text = "${cantidad} ${monedaSeleccionadaOrigen?.simbolo} son",
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontSize = 20.sp
+                        ),
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .fillMaxWidth()
+                            .wrapContentWidth(align = Alignment.CenterHorizontally),
+                        textAlign = TextAlign.Center
+                    )
+
+                    Text(
+                        text = "$cantidadConvertidaFormateada ${monedaSeleccionadaDestino?.simbolo}",
+                        style = MaterialTheme.typography.headlineLarge.copy(
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 30.sp
+                        ),
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .fillMaxWidth()
+                            .wrapContentWidth(align = Alignment.CenterHorizontally),
+                        textAlign = TextAlign.Center
                     )
                 }
             }

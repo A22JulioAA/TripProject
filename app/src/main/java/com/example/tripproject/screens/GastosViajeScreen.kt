@@ -87,17 +87,18 @@ fun GastosViajeScreen(modifier: Modifier = Modifier) {
                 
                 Text(
                     text = stringResource(R.string.presentacion_calculadora_gastos),
-                    style = MaterialTheme.typography.headlineSmall.copy(
+                    style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        color = Color.White,
+                        color = Color.Black,
                         shadow = Shadow(
                             color = Color.Black.copy(alpha = 0.3f),
                             offset = Offset(2f, 2f),
                             blurRadius = 4f
                         )
                     ),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .padding(16.dp)
                 )
 
                 // Campos de kilómetros a recorrer

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- GENERAL -->
+    <string name="app_name">TripProject</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoieHh4dWxpbyIsImEiOiJjbTQ2eWtiNGQxYWtmMmtxeGFhem5hNTEyIn0.JKMi1dJsZqJuNAHnp5wlYw</string>
+    <string name="welcome_message">
+        Reisen sollen genossen werden,
+        überlassen Sie uns den Rest!
+    </string>
+    <string name="user_name">Julio</string>
+    <string name="userGreeting">Willkommen Julio!</string>
+    <string name="boton_cancelar">Abbrechen</string>
+    <string name="default_nav_controller_page">home</string>
+    <string name="common_error">Es ist ein Fehler aufgetreten...</string>
+
+    <!-- TOPBAR -->
+    <string name="topbar_title" translatable="false">TripWise</string>
+    <!-- TOPBAR alt images -->
+    <string name="logo_alt">Flugzeug fliegt über Berge</string>
+    <string name="user_icon_alt">App-Benutzer, Optionen öffnen</string>
+    <!-- TOPBAR dropdown menu sections -->
+    <string name="seccion_perfil">Mein Profil👤</string>
+    <string name="seccion_ayuda">Hilfe❓</string>
+    <string name="seccion_salir">Beenden🔴</string>
+
+    <!-- BOTTOMBAR alt images -->
+    <string name="home_alt">Startseite</string>
+    <string name="gastos_viaje_alt">Reisekosten</string>
+    <string name="conversor_divisas_alt">Währungsrechner</string>
+    <string name="planificador_rutas_alt">Routenplaner mit Karten</string>
+
+    <!-- WELCOME -->
+    <string name="presentacion_welcome_rutas">Deine Routen</string>
+    <string name="nueva_ruta_formulario_titulo">Neue Route</string>
+    <string name="campo_nombre_formulario">Name</string>
+    <string name="campo_descripcion_formulario">Beschreibung</string>
+    <string name="campo_nombre_formulario_placeholder">Beispiel: Inka-Trail</string>
+    <string name="campo_descripcion_formulario_placeholder">Beispiel: 4-Tage-Route durch Cusco</string>
+    <string name="boton_aceptar_nueva_ruta">Erstellen</string>
+    <string name="crear_nueva_ruta_button">Erstelle eine neue Route!</string>
+
+    <!-- EXPENSE CALCULATOR -->
+    <string name="presentacion_calculadora_gastos">Berechnen Sie die ungefähren Kosten Ihrer Reise
+        mit dem Auto, angepasst an Ihre Vorlieben
+    </string>
+    <string name="error_faltan_datos">Bitte geben Sie alle Werte korrekt ein</string>
+    <string name="kilometros_a_recorrer">Wie viele Kilometer werden Sie fahren?</string>
+    <string name="kilometros_a_recorrer_placeholder">150km</string>
+    <string name="tipo_combustible">Kraftstoffart</string>
+    <string name="precio_combustible">Kraftstoffpreis / L (€)</string>
+    <string name="precio_combustible_placeholder">1.56</string>
+    <string name="boton_calcular">Berechnen</string>
+
+    <!-- CURRENCY CONVERTER -->
+    <string name="moneda_origen_input">Quellwährung</string>
+    <string name="moneda_destino_input">Zielwährung</string>
+    <string name="selecciona_moneda">Währung auswählen</string>
+    <string name="cantidad_a_convertir">Umzurechnender Betrag</string>
+    <string name="cantidad">Betrag</string>
+    <string name="mensaje_convierte">Konvertieren für die Reise!</string>
+</resources>

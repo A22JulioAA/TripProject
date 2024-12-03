@@ -9,16 +9,18 @@
     <string name="user_name">Julio</string>
     <string name="userGreeting">Bienvenido Julio!</string>
     <string name="boton_cancelar">Cancelar</string>
+    <string name="default_nav_controller_page">home</string>
+    <string name="common_error">Ha sucedido un error...</string>
 
     <!-- TOPBAR -->
-    <string name="topbar_title">TripWise</string>
+    <string name="topbar_title" translatable="false">TripWise</string>
     <!-- TOPBAR alt images -->
     <string name="logo_alt">Avión volando sobre unas montañas</string>
     <string name="user_icon_alt">Usuario de la aplicación, abrir opciones</string>
     <!-- TOPBAR secciones menu desplegable -->
-    <string name="seccion_perfil">Mi perfil</string>
-    <string name="seccion_ayuda">Ayuda</string>
-    <string name="seccion_salir">Salir</string>
+    <string name="seccion_perfil">Mi perfil👤</string>
+    <string name="seccion_ayuda">Ayuda❓</string>
+    <string name="seccion_salir">Salir🔴</string>
 
     <!-- BOTTOMBAR alt images -->
     <string name="home_alt">Home</string>
@@ -34,10 +36,26 @@
     <string name="campo_nombre_formulario_placeholder">Ejemplo: Camino Inca</string>
     <string name="campo_descripcion_formulario_placeholder">Ejemplo: Ruta de 4 días por Cusco</string>
     <string name="boton_aceptar_nueva_ruta">Crear</string>
+    <string name="crear_nueva_ruta_button">Crea una nueva ruta!</string>
 
     <!-- CALCULADORA GASTOS -->
     <string name="presentacion_calculadora_gastos">Calcula los gastos aproximados en tu viaje
         en coche, a tu medida teniendo en cuenta tus preferencias
     </string>
     <string name="error_faltan_datos">Por favor, introduce todos los valores correctamente</string>
+    <string name="kilometros_a_recorrer">¿Cuántos kilómetros vas a recorrer?</string>
+    <string name="kilometros_a_recorrer_placeholder">150km</string>
+    <string name="tipo_combustible">Tipo de combustible</string>
+    <string name="precio_combustible">Precio del combustible / L (€)</string>
+    <string name="precio_combustible_placeholder">1.56</string>
+    <string name="boton_calcular">Calcular</string>
+
+    <!-- CONVERSOR DIVISAS -->
+    <string name="moneda_origen_input">Moneda origen</string>
+    <string name="moneda_destino_input">Moneda destino</string>
+    <string name="selecciona_moneda">Selecciona una moneda</string>
+    <string name="cantidad_a_convertir">Cantidad a convertir</string>
+    <string name="cantidad">Cantidad</string>
+    <string name="mensaje_convierte">¡Convierte para viajar!</string>
+
 </resources>

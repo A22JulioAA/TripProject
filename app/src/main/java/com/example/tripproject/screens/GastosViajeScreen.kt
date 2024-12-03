@@ -84,21 +84,14 @@ fun GastosViajeScreen(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .padding(16.dp)
             ) {
-                
                 Text(
                     text = stringResource(R.string.presentacion_calculadora_gastos),
-                    style = MaterialTheme.typography.bodyLarge.copy(
+                    style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        color = Color.Black,
-                        shadow = Shadow(
-                            color = Color.Black.copy(alpha = 0.3f),
-                            offset = Offset(2f, 2f),
-                            blurRadius = 4f
-                        )
+                        color = MaterialTheme.colorScheme.primary
                     ),
                     textAlign = TextAlign.Start,
-                    modifier = Modifier
-                        .padding(16.dp)
+                    modifier = Modifier.padding(bottom = 16.dp)
                 )
 
                 // Campos de kilómetros a recorrer
@@ -109,12 +102,11 @@ fun GastosViajeScreen(modifier: Modifier = Modifier) {
                             kilometros = nuevaCantidad
                         }
                     },
-                    label = { Text("Kilómetros a recorrer") },
+                    label = { Text(stringResource(R.string.kilometros_a_recorrer)) },
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     modifier = Modifier
                         .fillMaxWidth(),
-                    placeholder = { Text("Introduce los kilómetros") },
-                    singleLine = true
+                    placeholder = { Text(stringResource(R.string.kilometros_a_recorrer_placeholder)) },
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -127,7 +119,7 @@ fun GastosViajeScreen(modifier: Modifier = Modifier) {
                     OutlinedTextField(
                         value = tipoCombustible,
                         onValueChange = {},
-                        label = { Text("Tipo de combustible") },
+                        label = { Text(stringResource(R.string.tipo_combustible)) },
                         readOnly = true,
                         modifier = Modifier
                             .menuAnchor()
@@ -165,14 +157,13 @@ fun GastosViajeScreen(modifier: Modifier = Modifier) {
                             precioCombustible = nuevoValor
                         }
                     },
-                    label = { Text("Precio del combustible / L (€)") },
+                    label = { Text(stringResource(R.string.precio_combustible)) },
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.Decimal
                     ),
                     modifier = Modifier
                         .fillMaxWidth(),
-                    placeholder = { Text("Introduce el precio") },
-                    singleLine = true
+                    placeholder = { Text(stringResource(R.string.precio_combustible_placeholder)) },
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -221,10 +212,10 @@ fun GastosViajeScreen(modifier: Modifier = Modifier) {
                         .fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF63A002),
-                        contentColor = Color.White
+                        contentColor = Color.Black
                     )
                 ) {
-                    Text("Calcular")
+                    Text(stringResource(R.string.boton_calcular))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))

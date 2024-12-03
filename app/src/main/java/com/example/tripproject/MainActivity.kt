@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +17,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -105,12 +109,14 @@ fun TopBar(){
         TopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = Color(0xFF63A002),
-                titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                titleContentColor = MaterialTheme.colorScheme.onPrimary
             ),
             title = {
                 Row (
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalArrangement = Arrangement.SpaceAround,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     // Imagen del logo
@@ -120,36 +126,32 @@ fun TopBar(){
                         modifier = Modifier.size(70.dp)
                     )
 
-                    Spacer(modifier = Modifier.weight(1f))
-
                     // Nombre de la aplicación
                     Text(
                         text = stringResource(id = R.string.topbar_title),
-                        style = TextStyle(
-                            fontSize = 24.sp,
+                        style = MaterialTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Bold,
-                            fontFamily = FontFamily.SansSerif
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     )
 
-                    Spacer(modifier = Modifier.weight(1f))
-
                     // Imagen de usuario que será un desplegable con diferentes opciones
-                    Box(
-                        contentAlignment = Alignment.TopEnd
-                    ) {
+                    Box {
                         Image(
                             painter = painterResource(id = R.drawable.user_icon),
                             contentDescription = stringResource(R.string.user_icon_alt),
                             modifier = Modifier
-                                .size(32.dp)
+                                .size(40.dp)
                                 .clickable { expanded = !expanded }
+                                .border(1.dp, MaterialTheme.colorScheme.onPrimary, CircleShape)
+                                .padding(4.dp)
                         )
+
                         DropdownMenu(
                             expanded = expanded,
                             onDismissRequest = { expanded = false },
                             modifier = Modifier
-                                .background(TealLight)
+                                .background(MaterialTheme.colorScheme.surface)
                         ) {
                             DropdownMenuItem(
                                 onClick = {},
@@ -159,7 +161,8 @@ fun TopBar(){
                             )
                             HorizontalDivider()
                             DropdownMenuItem(
-                                onClick = {},
+                                onClick = {
+                                },
                                 text = {
                                     MyTxt(stringResource(R.string.seccion_ayuda), Modifier.padding(15.dp))
                                 }
@@ -176,9 +179,9 @@ fun TopBar(){
                             )
                         }
                     }
-                    Spacer(modifier = Modifier.weight(1f))
                 }
-            }
+            },
+            modifier = Modifier.shadow(4.dp)
         )
 }
 
@@ -198,7 +201,7 @@ fun BottomBar (navController: NavController) {
                 )
             },
 //            label = { Text(stringResource(R.string.home_alt)) },
-            selected = navController.currentBackStackEntry?.destination?.route == "home",
+            selected = navController.currentBackStackEntry?.destination?.route == stringResource(R.string.default_nav_controller_page),
             onClick = { navController.navigate("home") {
                 launchSingleTop = true
                 restoreState = true

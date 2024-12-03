@@ -1,5 +1,10 @@
 package com.example.tripproject.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -127,12 +132,13 @@ fun WelcomeScreen(rutaViewModel: RutaViewModel, modifier: Modifier = Modifier) {
                     )
                 ) {
                     Text(
-                        text = "Crea una nueva ruta!"
+                        text = stringResource(R.string.crear_nueva_ruta_button)
                     )
                 }
 
                 if (isDialogOpen) {
                     FormDialog(
+                        isVisible = isDialogOpen,
                         onDismiss = { isDialogOpen = false },
                         nombreRuta = nombreRuta,
                         onRouteDescriptionChange = { descripcionRuta = it },
@@ -203,6 +209,7 @@ fun RutaItem (ruta: com.example.tripproject.models.Ruta) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormDialog (
+    isVisible: Boolean,
     onDismiss: () -> Unit,
     nombreRuta: String,
     onRouteNameChange: (String) -> Unit,
@@ -210,58 +217,64 @@ fun FormDialog (
     onRouteDescriptionChange: (String) -> Unit,
     onRouteCreated: (String, String) -> Unit
 ) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = {
-            Text(
-                stringResource(R.string.nueva_ruta_formulario_titulo),
-                style = MaterialTheme.typography.headlineSmall,
-                color = Color(0xFF63A002)
-            )
-        },
-        text = {
-            Column (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                OutlinedTextField(
-                    value = nombreRuta,
-                    onValueChange = onRouteNameChange,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    label = { Text(stringResource(R.string.campo_nombre_formulario)) },
-                    placeholder = { Text(stringResource(R.string.campo_nombre_formulario_placeholder)) }
-                )
-
-                OutlinedTextField(
-                    value = descripcionRuta,
-                    onValueChange = onRouteDescriptionChange,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    label = { Text(stringResource(R.string.campo_descripcion_formulario)) },
-                    placeholder = { Text(stringResource(R.string.campo_descripcion_formulario_placeholder)) }
-                )
-            }
-        },
-        confirmButton = {
-            Button(
-                onClick = {
-                    onRouteCreated(nombreRuta, descripcionRuta)
-                    onDismiss()
-                }
-            ) {
-                Text(stringResource(R.string.boton_aceptar_nueva_ruta))
-            }
-        },
-        dismissButton = {
-            Button(onClick = { onDismiss() }) {
+    AnimatedVisibility(
+    visible = isVisible,
+    enter = fadeIn() + slideInVertically(initialOffsetY = {fullHeight -> fullHeight / 2 }),
+    exit = fadeOut() + slideOutVertically(targetOffsetY = { fullHeight -> fullHeight / 2 })
+    ) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = {
                 Text(
-                    stringResource(R.string.boton_cancelar),
-                    color = Color.Gray
+                    stringResource(R.string.nueva_ruta_formulario_titulo),
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = Color(0xFF63A002)
                 )
+            },
+            text = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    OutlinedTextField(
+                        value = nombreRuta,
+                        onValueChange = onRouteNameChange,
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        label = { Text(stringResource(R.string.campo_nombre_formulario)) },
+                        placeholder = { Text(stringResource(R.string.campo_nombre_formulario_placeholder)) }
+                    )
+
+                    OutlinedTextField(
+                        value = descripcionRuta,
+                        onValueChange = onRouteDescriptionChange,
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        label = { Text(stringResource(R.string.campo_descripcion_formulario)) },
+                        placeholder = { Text(stringResource(R.string.campo_descripcion_formulario_placeholder)) }
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        onRouteCreated(nombreRuta, descripcionRuta)
+                        onDismiss()
+                    }
+                ) {
+                    Text(stringResource(R.string.boton_aceptar_nueva_ruta))
+                }
+            },
+            dismissButton = {
+                Button(onClick = { onDismiss() }) {
+                    Text(
+                        stringResource(R.string.boton_cancelar),
+                        color = Color.Gray
+                    )
+                }
             }
-        }
-    )
+        )
+    }
 }

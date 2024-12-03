@@ -6,7 +6,7 @@ TripWise es un proyecto en el que se desarrolla una aplicación de Android con J
 
 A continuación se hace referencia a la documentación del proyecto:
 
-1. [Estudo preliminar](doc/1.descripcion.md)
+1. [Estudo preliminar](doc/Descripción.md)
 2. [Análise](doc/2.analisis.md)
 3. [Deseño](doc/3.disenho.md)
 
